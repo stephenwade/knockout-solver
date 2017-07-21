@@ -1,0 +1,19 @@
+{
+  "name": "knockout-solver",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephenwade/knockout-solver.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stephenwade/knockout-solver/issues"
+  },
+  "homepage": "https://github.com/stephenwade/knockout-solver#readme"
+}
