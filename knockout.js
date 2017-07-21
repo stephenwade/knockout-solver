@@ -35,3 +35,9 @@ class Board {
     return this.spaces[spaceIndex].getState();
   }
 }
+
+class Player {
+  constructor() {
+    // lol we literally don't need a constructor
+  }
+}
