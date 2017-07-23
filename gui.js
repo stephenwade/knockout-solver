@@ -1,32 +1,51 @@
-let numSpaces = 18;
-let marbleRadius = 20;
-let textSize = 20;
-let bigRadius = (view.size.height / 2) - marbleRadius;
-let numberRadius = (view.size.height / 2) - (marbleRadius * 2) - (textSize);
-let smallRadius = (view.size.height / 2) - (marbleRadius * 4) - 20;
-let center = view.center;
-let shiftedCenter = view.center;
-shiftedCenter.y += (textSize / 2.2);
+class Gui {
+  constructor(numSpaces) {
+    this.numSpaces = numSpaces;
+    this.marbleRadius = 20;
+    this.textSize = 20;
+    let bigRadius = (view.size.height / 2) - this.marbleRadius;
+    let numberRadius = (view.size.height / 2) - (this.marbleRadius * 2) - (this.textSize);
+    let smallRadius = (view.size.height / 2) - (this.marbleRadius * 4) - 20;
+    let center = view.center;
+    let shiftedCenter = view.center;
+    shiftedCenter.y += (this.textSize / 2.2);
 
-let outerPoints = [];
-let numberPoints = [];
-let innerPoints = [];
+    let outerPoints = [];
+    let numberPoints = [];
+    let innerPoints = [];
 
-populatePoints(center, numSpaces, bigRadius, outerPoints);
-populatePoints(shiftedCenter, numSpaces, numberRadius, numberPoints);
-populatePoints(center, numSpaces, smallRadius, innerPoints);
+    populatePoints(center, this.numSpaces, bigRadius, outerPoints);
+    populatePoints(shiftedCenter, this.numSpaces, numberRadius, numberPoints);
+    populatePoints(center, this.numSpaces, smallRadius, innerPoints);
 
-console.log(outerPoints.length);
+    this.outerCircles = [];
+    this.numbers = [];
+    this.innerCircles = [];
 
-let outerCircles = [];
-let numbers = [];
-let innerCircles = [];
+    populateCircles(this.marbleRadius, outerPoints, this.outerCircles);
+    populateNumbers(this.textSize, numberPoints, this.numbers);
+    populateCircles(this.marbleRadius, innerPoints, this.innerCircles);
 
-populateCircles(marbleRadius, outerPoints, outerCircles);
-populateNumbers(textSize, numberPoints, numbers);
-populateCircles(marbleRadius, innerPoints, innerCircles);
+    view.update();
+  }
 
-view.update();
+  updateBoard(board) {
+    for (let i = 0; i < board.length; i++) {
+      if (board[i].state == 'empty') {
+        this.outerCircles[i].fillColor = null;
+        this.innerCircles[i].fillColor = null;
+      } else if (board[i].state == 'one') {
+        this.outerCircles[i].fillColor = board[i].player.color;
+        this.innerCircles[i].fillColor = null;
+      } else if (board[i].state == 'two') {
+        this.outerCircles[i].fillColor = board[i].player.color;
+        this.innerCircles[i].fillColor = board[i].player.color;
+      }
+    }
+
+    view.update();
+  }
+}
 
 function populatePoints(center, numPoints, radius, arr) {
   for (let i = 0; i < numPoints; i++) {
@@ -56,21 +75,6 @@ function populateNumbers(size, pointArr, arr) {
     text.justification = 'center';
     text.fontSize = size;
     arr.push(text);
-  }
-}
-
-function updateBoard(board) {
-  for (let i = 0; i < board.length; i++) {
-    if (board[i].state == 'empty') {
-      outerCircles[i].fillColor = null;
-      innerCircles[i].fillColor = null;
-    } else if (board[i].state == 'one') {
-      outerCircles[i].fillColor = board[i].player.color;
-      innerCircles[i].fillColor = null;
-    } else if (board[i].state == 'two') {
-      outerCircles[i].fillColor = board[i].player.color;
-      innerCircles[i].fillColor = board[i].player.color;
-    }
   }
 }
 
@@ -185,4 +189,5 @@ let boardState = [
   }
 ];
 
-updateBoard(boardState);
+let gui = new Gui(18);
+gui.updateBoard(boardState);
