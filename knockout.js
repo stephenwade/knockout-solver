@@ -1,3 +1,33 @@
+const uuid4 = function () {
+  // https://gist.github.com/kaizhu256/4482069
+  //// return uuid of form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+  var uuid = '', ii;
+  for (ii = 0; ii < 32; ii += 1) {
+    switch (ii) {
+    case 8:
+    case 20:
+      uuid += '-';
+      uuid += (Math.random() * 16 | 0).toString(16);
+      break;
+    case 12:
+      uuid += '-';
+      uuid += '4';
+      break;
+    case 16:
+      uuid += '-';
+      uuid += (Math.random() * 4 | 8).toString(16);
+      break;
+    default:
+      uuid += (Math.random() * 16 | 0).toString(16);
+    }
+  }
+  return uuid;
+};
+
+const rollDie = function (value) {
+  return Math.floor(Math.random() * value) + 1;
+}
+
 class BoardSpace {
   constructor() {
     this.state = 'empty'; // possible states: empty, one, both
@@ -16,10 +46,6 @@ class BoardSpace {
     }
     return false;
   }
-
-  getState() {
-    return this.state;
-  }
 }
 
 class Board {
@@ -37,8 +63,10 @@ class Board {
 }
 
 class Player {
-  constructor(id) {
-    this.id = id;
+  constructor(name, color) {
+    this.id = uuid4();
+    this.name = name;
+    this.color = color;
   }
 }
 
@@ -50,57 +78,66 @@ class Game {
     this.gameState = 'starting'; // possible states: starting, playing, end
   }
 
-  broadcastState(isReadyForNextTurn) {
-    var event = new CustomEvent('broadcaststate', {
-      'readyForNextTurn': isReadyForNextTurn,
-      'nextPlayer': this.currentPlayer ? this.currentPlayer.id : undefined,
-      'board': this.board,
-      'gameState': this.gameState
-    });
+  broadcastState() {
+    const state = {
+      board: board.spaces.map(item => Object.assign({}, item)),
+      players: players.map(player => Object.assign({}, player)),
+      currentPlayer: typeof currentPlayer == 'undefined' ? undefined : currentPlayer.id,
+      gameState: gameState
+    };
 
-    this.dispatchEvent(event);
+    window.dispatch(new CustomEvent('knockout-gamestate', {
+      detail: state
+    }));
   }
 
-  addPlayer(player) {
-    this.players.push(player);
-    this.broadcastState();
+  addPlayer(name, color) {
+    if (gameState != 'starting')
+      return false;
+
+    players.push(new Player(name, color));
+    broadcastState();
+    return true;
   }
 
   removePlayer(id) {
+    if (gameState != 'starting')
+      return false;
+
     for (let i = 0; i < this.players.length; i++) {
       if (id === this.players[i].id) {
         this.players.splice(i, 1) // remove this.players[i]
       }
     }
     this.broadcastState();
+    return true;
   }
 
   startGame() {
+    if (players.length < 2)
+      return false;
+
     this.gameState = 'playing';
-    this.broadcastState();
+    nextTurn();
   }
 
-  // returns true on success
   nextTurn() {
-    // no players in player array
-    if (this.players.length == 0) {
+    if (this.gameState != 'playing')
       return false;
-    }
 
-    // current player isn't defined
-    if (this.currentPlayer == undefined) {
-      this.currentPlayer = players[0];
-      return true;
-    }
-
-    var currentPlayerIndex = this.players.indexOf(this.currentPlayer);
-    // current player isn't part of the player array
-    if (currentPlayerIndex == -1) {
-      return false;
-    }
-
-    // normal case, move the player along
+    const currentPlayerIndex = players.indexOf(this.currentPlayer);
     this.currentPlayer = this.players[(currentPlayerIndex + 1) % this.players.length];
+
+    const turn = {
+      player: currentPlayer.id,
+      dice: rollDie(6) + rollDie(6) + rollDie(6)
+    };
+
+    window.dispatch(new CustomEvent('knockout-nextturn', {
+      detail: turn
+    }));
+
+    broadcastState();
     return true;
   }
 }
