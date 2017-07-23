@@ -14,17 +14,17 @@ class Gui {
     let numberPoints = [];
     let innerPoints = [];
 
-    populatePoints(center, this.numSpaces, bigRadius, outerPoints);
-    populatePoints(shiftedCenter, this.numSpaces, numberRadius, numberPoints);
-    populatePoints(center, this.numSpaces, smallRadius, innerPoints);
+    this.populatePoints(center, this.numSpaces, bigRadius, outerPoints);
+    this.populatePoints(shiftedCenter, this.numSpaces, numberRadius, numberPoints);
+    this.populatePoints(center, this.numSpaces, smallRadius, innerPoints);
 
     this.outerCircles = [];
     this.numbers = [];
     this.innerCircles = [];
 
-    populateCircles(this.marbleRadius, outerPoints, this.outerCircles);
-    populateNumbers(this.textSize, numberPoints, this.numbers);
-    populateCircles(this.marbleRadius, innerPoints, this.innerCircles);
+    this.populateCircles(this.marbleRadius, outerPoints, this.outerCircles);
+    this.populateNumbers(this.textSize, numberPoints, this.numbers);
+    this.populateCircles(this.marbleRadius, innerPoints, this.innerCircles);
 
     view.update();
   }
@@ -45,149 +45,35 @@ class Gui {
 
     view.update();
   }
-}
 
-function populatePoints(center, numPoints, radius, arr) {
-  for (let i = 0; i < numPoints; i++) {
-    let thisAngle = (i / numPoints) * 360 - 90 + (.5/numPoints*360);
-    arr.push(center + new Point({
-      length: radius,
-      angle: thisAngle
-    }));
-  }
-}
-
-function populateCircles(radius, pointArr, arr) {
-  for (let item of pointArr) {
-    let circ = new Path.Circle(item, radius);
-    circ.fillColor = null;
-    circ.strokeColor = 'black';
-    circ.strokeWidth = 3;
-    arr.push(circ);
-  }
-}
-
-function populateNumbers(size, pointArr, arr) {
-  for (let i = 0; i < pointArr.length; i++) {
-    let text = new PointText(pointArr[i]);
-    text.content = (i + 1).toString();
-    text.fillColor = 'black';
-    text.justification = 'center';
-    text.fontSize = size;
-    arr.push(text);
-  }
-}
-
-let boardState = [
-  {
-    state: 'one',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'one',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'two',
-    player: {
-      color: '#00ff00'
-    }
-  },
-  {
-    state: 'one',
-    player: {
-      color: '#00ff00'
-    }
-  },
-  {
-    state: 'one',
-    player: {
-      color: '#00ff00'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'one',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'one',
-    player: {
-      color: '#00ff00'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'one',
-    player: {
-      color: '#0000ff'
-    }
-  },
-  {
-    state: 'emtpy',
-    player: {
-      color: '#ff0000'
-    }
-  },
-  {
-    state: 'one',
-    player: {
-      color: '#0000ff'
+  populatePoints(center, numPoints, radius, arr) {
+    for (let i = 0; i < numPoints; i++) {
+      let thisAngle = (i / numPoints) * 360 - 90 + (.5/numPoints*360);
+      arr.push(center + new Point({
+        length: radius,
+        angle: thisAngle
+      }));
     }
   }
-];
 
-let gui = new Gui(18);
-gui.updateBoard(boardState);
+  populateCircles(radius, pointArr, arr) {
+    for (let item of pointArr) {
+      let circ = new Path.Circle(item, radius);
+      circ.fillColor = null;
+      circ.strokeColor = 'black';
+      circ.strokeWidth = 3;
+      arr.push(circ);
+    }
+  }
+
+  populateNumbers(size, pointArr, arr) {
+    for (let i = 0; i < pointArr.length; i++) {
+      let text = new PointText(pointArr[i]);
+      text.content = (i + 1).toString();
+      text.fillColor = 'black';
+      text.justification = 'center';
+      text.fontSize = size;
+      arr.push(text);
+    }
+  }
+}
