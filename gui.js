@@ -60,131 +60,129 @@ function populateNumbers(size, pointArr, arr) {
 }
 
 function updateBoard(board) {
-  for (let i = 0; i < board.spaces.length; i++) {
-    if (board.spaces[i].state == 'empty') {
+  for (let i = 0; i < board.length; i++) {
+    if (board[i].state == 'empty') {
       outerCircles[i].fillColor = null;
       innerCircles[i].fillColor = null;
-    } else if (board.spaces[i].state == 'one') {
-      outerCircles[i].fillColor = board.spaces[i].player.color;
+    } else if (board[i].state == 'one') {
+      outerCircles[i].fillColor = board[i].player.color;
       innerCircles[i].fillColor = null;
-    } else if (board.spaces[i].state == 'two') {
-      outerCircles[i].fillColor = board.spaces[i].player.color;
-      innerCircles[i].fillColor = board.spaces[i].player.color;
+    } else if (board[i].state == 'two') {
+      outerCircles[i].fillColor = board[i].player.color;
+      innerCircles[i].fillColor = board[i].player.color;
     }
   }
 }
 
-let boardState = {
-  spaces: [
-    {
-      state: 'one',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'one',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'two',
-      player: {
-        color: '#00ff00'
-      }
-    },
-    {
-      state: 'one',
-      player: {
-        color: '#00ff00'
-      }
-    },
-    {
-      state: 'one',
-      player: {
-        color: '#00ff00'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'one',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'one',
-      player: {
-        color: '#00ff00'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'one',
-      player: {
-        color: '#0000ff'
-      }
-    },
-    {
-      state: 'emtpy',
-      player: {
-        color: '#ff0000'
-      }
-    },
-    {
-      state: 'one',
-      player: {
-        color: '#0000ff'
-      }
+let boardState = [
+  {
+    state: 'one',
+    player: {
+      color: '#ff0000'
     }
-  ]
-};
+  },
+  {
+    state: 'one',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'two',
+    player: {
+      color: '#00ff00'
+    }
+  },
+  {
+    state: 'one',
+    player: {
+      color: '#00ff00'
+    }
+  },
+  {
+    state: 'one',
+    player: {
+      color: '#00ff00'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'one',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'one',
+    player: {
+      color: '#00ff00'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'one',
+    player: {
+      color: '#0000ff'
+    }
+  },
+  {
+    state: 'emtpy',
+    player: {
+      color: '#ff0000'
+    }
+  },
+  {
+    state: 'one',
+    player: {
+      color: '#0000ff'
+    }
+  }
+];
 
 updateBoard(boardState);
