@@ -50,8 +50,15 @@ class Game {
     this.gameState = 'starting'; // possible states: starting, playing, end
   }
 
-  broadcastState() {
-    // fire an event with the board state, so the UI can know something just happened
+  broadcastState(isReadyForNextTurn) {
+    var event = new CustomEvent('broadcaststate', {
+      'readyForNextTurn': isReadyForNextTurn,
+      'nextPlayer': this.currentPlayer ? this.currentPlayer.id : undefined,
+      'board': this.board,
+      'gameState': this.gameState
+    });
+
+    this.dispatchEvent(event);
   }
 
   addPlayer(player) {
@@ -71,5 +78,29 @@ class Game {
   startGame() {
     this.gameState = 'playing';
     this.broadcastState();
+  }
+
+  // returns true on success
+  nextTurn() {
+    // no players in player array
+    if (this.players.length == 0) {
+      return false;
+    }
+
+    // current player isn't defined
+    if (this.currentPlayer == undefined) {
+      this.currentPlayer = players[0];
+      return true;
+    }
+
+    var currentPlayerIndex = this.players.indexOf(this.currentPlayer);
+    // current player isn't part of the player array
+    if (currentPlayerIndex == -1) {
+      return false;
+    }
+
+    // normal case, move the player along
+    this.currentPlayer = this.players[(currentPlayerIndex + 1) % this.players.length];
+    return true;
   }
 }
