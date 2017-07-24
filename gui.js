@@ -27,6 +27,10 @@ class Gui {
     this.populateCircles(this.marbleRadius, innerPoints, this.innerCircles);
 
     view.update();
+
+    window.addEventListener('knockout-gamestate', function(event){
+      this.updateBoard(event.detail.board);
+    });
   }
 
   updateBoard(board) {
