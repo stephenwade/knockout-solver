@@ -1,13 +1,15 @@
 class Gui {
   constructor(numSpaces) {
+
+    paper.setup('knockout-canvas');
     this.numSpaces = numSpaces;
     this.marbleRadius = 20;
     this.textSize = 20;
-    let bigRadius = (view.size.height / 2) - this.marbleRadius;
-    let numberRadius = (view.size.height / 2) - (this.marbleRadius * 2) - (this.textSize);
-    let smallRadius = (view.size.height / 2) - (this.marbleRadius * 4) - 20;
-    let center = view.center;
-    let shiftedCenter = view.center;
+    let bigRadius = (paper.view.size.height / 2) - this.marbleRadius;
+    let numberRadius = (paper.view.size.height / 2) - (this.marbleRadius * 2) - (this.textSize);
+    let smallRadius = (paper.view.size.height / 2) - (this.marbleRadius * 4) - 20;
+    let center = paper.view.center;
+    let shiftedCenter = paper.view.center;
     shiftedCenter.y += (this.textSize / 2.2);
 
     let outerPoints = [];
@@ -26,11 +28,13 @@ class Gui {
     this.populateNumbers(this.textSize, numberPoints, this.numbers);
     this.populateCircles(this.marbleRadius, innerPoints, this.innerCircles);
 
-    view.update();
+    paper.view.update();
 
-    window.addEventListener('knockout-gamestate', function(event){
+    window.addEventListener('knockout-gamestate', event => {
       this.updateBoard(event.detail.board);
     });
+
+    paper.view.draw();
   }
 
   updateBoard(board) {
@@ -47,22 +51,22 @@ class Gui {
       }
     }
 
-    view.update();
+    paper.view.update();
   }
 
   populatePoints(center, numPoints, radius, arr) {
     for (let i = 0; i < numPoints; i++) {
       let thisAngle = (i / numPoints) * 360 - 90 + (.5/numPoints*360);
-      arr.push(center + new Point({
+      arr.push(center.add(new paper.Point({
         length: radius,
         angle: thisAngle
-      }));
+      })));
     }
   }
 
   populateCircles(radius, pointArr, arr) {
     for (let item of pointArr) {
-      let circ = new Path.Circle(item, radius);
+      let circ = new paper.Path.Circle(item, radius);
       circ.fillColor = null;
       circ.strokeColor = 'black';
       circ.strokeWidth = 3;
@@ -72,7 +76,7 @@ class Gui {
 
   populateNumbers(size, pointArr, arr) {
     for (let i = 0; i < pointArr.length; i++) {
-      let text = new PointText(pointArr[i]);
+      let text = new paper.PointText(pointArr[i]);
       text.content = (i + 1).toString();
       text.fillColor = 'black';
       text.justification = 'center';
