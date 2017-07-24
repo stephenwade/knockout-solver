@@ -130,7 +130,7 @@ class Game {
       gameState: this.gameState
     };
 
-    window.dispatch(
+    window.dispatchEvent(
       new CustomEvent("knockout-gamestate", {
         detail: state
       })
@@ -164,7 +164,7 @@ class Game {
       diceTotal: diceTotal
     };
 
-    window.dispatch(
+    window.dispatchEvent(
       new CustomEvent("knockout-nextturn", {
         detail: turn
       })
