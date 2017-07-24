@@ -45,7 +45,7 @@ class Gui {
       } else if (board[i].state == 'one') {
         this.outerCircles[i].fillColor = board[i].player.color;
         this.innerCircles[i].fillColor = null;
-      } else if (board[i].state == 'two') {
+      } else if (board[i].state == 'both') {
         this.outerCircles[i].fillColor = board[i].player.color;
         this.innerCircles[i].fillColor = board[i].player.color;
       }

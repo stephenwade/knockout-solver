@@ -36,19 +36,22 @@ class BoardSpace {
   }
 
   canMove(player) {
-    if (this.state === "empty") return true;
-    if (this.state === "one" && this.player === player) return true;
-    return false;
+    return this.state == "empty" || this.state == "one";
   }
 
   move(player) {
-    if (this.state === "empty") {
+    if (this.state == "empty") {
       this.state = "one";
       this.player = player;
       return true;
-    } else if (this.state === "one" && this.player === player) {
-      this.state = "both";
-      return true;
+    } else if (this.state == "one") {
+      if (this.player == player) {
+        this.state = "both";
+        return true;
+      } else {
+        this.player = player;
+        return true;
+      }
     }
 
     if (this.canMove(player)) throw new Error("move and canMove disagree");
@@ -105,17 +108,17 @@ class Game {
   }
 
   takeTurn(id, moves) {
-    if (this._getPlayerById(id) !== currentPlayer) return false;
+    if (this._getPlayerById(id) !== this.currentPlayer) return false;
 
     if (new Set(moves).size != moves.length) return false;
 
-    if (moves.any(move => move >= this.board.length)) return false;
+    if (moves.some(move => move > this.board.length)) return false;
 
     if (moves.reduce((sum, move) => sum + move, 0) != this.lastDiceTotal)
       return false;
 
-    if (moves.all(move => this.board[move].canMove(this.currentPlayer))) {
-      moves.forEach(move => this.board[move].move(this.currentPlayer));
+    if (moves.every(move => this.board[move - 1].canMove(this.currentPlayer))) {
+      moves.forEach(move => this.board[move - 1].move(this.currentPlayer));
       this._nextTurn();
       return true;
     }

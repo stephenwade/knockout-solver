@@ -11,5 +11,6 @@ window.onload = function() {
   knockout.players.push(knockout.game.addPlayer("Stephen", "blue"));
   knockout.players.push(knockout.game.addPlayer("Joshua", "red"));
 
+  window.addEventListener('knockout-nextturn', e => console.log("next turn", e.detail));
   knockout.game.startGame();
 }
