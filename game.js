@@ -75,8 +75,9 @@ class Game {
     this.board = board;
     this.players = [];
     this.currentPlayer = undefined;
-    this.gameState = "starting"; // possible states: starting, playing, end
+    this.gameState = "starting"; // possible states: starting, playing, ended
     this.lastDiceTotal = undefined;
+    this.consecutiveTurnsSkipped = 0;
   }
 
   addPlayer(name, color) {
@@ -101,14 +102,25 @@ class Game {
   }
 
   startGame() {
+    if (this.gameState != "starting") return false;
+
     if (this.players.length < 2) return false;
 
     this.gameState = "playing";
     this._nextTurn();
   }
 
-  takeTurn(id, moves) {
+  takeTurn(id, moves = []) {
+    if (this.gameState != "playing") return false;
+
     if (this._getPlayerById(id) !== this.currentPlayer) return false;
+
+    if (!Array.isArray(moves)) return false;
+
+    if (moves.length === 0) {
+      this._nextTurn(false);
+      return true;
+    }
 
     if (new Set(moves).size != moves.length) return false;
 
@@ -140,12 +152,34 @@ class Game {
     );
   }
 
+  _checkEndGame() {
+    if (this.consecutiveTurnsSkipped / this.players.length > 2) this._endGame();
+
+    const lockedSpaces = this.board.filter(space => space.state == "both");
+    if (
+      this.players.some(
+        player =>
+          lockedSpaces.filter(space => space.player == player).length >= 5
+      )
+    )
+      this._endGame();
+  }
+
+  _endGame() {
+    this.gameState = "ended";
+
+    this._broadcastState;
+  }
+
   _getPlayerById(id) {
     return this.players.find(player => player.id == id);
   }
 
-  _nextTurn() {
-    if (this.gameState != "playing") return false;
+  _nextTurn(moved = true) {
+    if (moved) this.consecutiveTurnsSkipped = 0;
+    else this.consecutiveTurnsSkipped += 1;
+
+    if (this._checkEndGame()) return;
 
     const currentPlayerIndex = this.players.indexOf(this.currentPlayer);
     this.currentPlayer = this.players[
@@ -162,6 +196,7 @@ class Game {
     this.lastDiceTotal = diceTotal;
 
     const turn = {
+      board: this.board.map(item => Object.assign({}, item)),
       player: this.currentPlayer.id,
       dice: dice,
       diceTotal: diceTotal
@@ -174,6 +209,5 @@ class Game {
     );
 
     this._broadcastState();
-    return true;
   }
 }
