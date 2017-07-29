@@ -1,24 +1,31 @@
 class Gui {
   constructor(numSpaces) {
-
     paper.setup('knockout-canvas');
+
+    let smallestDimension = 0;
+    if (paper.view.size.height < paper.view.size.width)
+      smallestDimension = paper.view.size.height;
+    else
+      smallestDimension = paper.view.size.width;
+
     this.numSpaces = numSpaces;
     this.marbleRadius = 20;
     this.textSize = 20;
-    let bigRadius = (paper.view.size.height / 2) - this.marbleRadius;
-    let numberRadius = (paper.view.size.height / 2) - (this.marbleRadius * 2) - (this.textSize);
-    let smallRadius = (paper.view.size.height / 2) - (this.marbleRadius * 4) - 20;
-    let center = paper.view.center;
-    let shiftedCenter = paper.view.center;
-    shiftedCenter.y += (this.textSize / 2.2);
+    this.bigRadius = (smallestDimension / 2) - this.marbleRadius;
+    this.numberRadius = (smallestDimension / 2) - (this.marbleRadius * 2) - (this.textSize);
+    this.smallRadius = (smallestDimension / 2) - (this.marbleRadius * 4) - 20;
+    this.center = paper.view.center;
+    this.shiftedCenter = paper.view.center;
+    this.shiftedCenter.y += (this.textSize / 2.5);
+    this.shiftedCenter.x -= (this.textSize / 15);
 
     let outerPoints = [];
     let numberPoints = [];
     let innerPoints = [];
 
-    this.populatePoints(center, this.numSpaces, bigRadius, outerPoints);
-    this.populatePoints(shiftedCenter, this.numSpaces, numberRadius, numberPoints);
-    this.populatePoints(center, this.numSpaces, smallRadius, innerPoints);
+    this.populatePoints(this.center, this.numSpaces, this.bigRadius, outerPoints);
+    this.populatePoints(this.shiftedCenter, this.numSpaces, this.numberRadius, numberPoints);
+    this.populatePoints(this.center, this.numSpaces, this.smallRadius, innerPoints);
 
     this.outerCircles = [];
     this.numbers = [];
@@ -35,6 +42,50 @@ class Gui {
     });
 
     paper.view.draw();
+
+    paper.view.onResize = () => {
+      let smallestDimension = 0;
+      if (paper.view.size.height < paper.view.size.width)
+        smallestDimension = paper.view.size.height;
+      else
+        smallestDimension = paper.view.size.width;
+
+      this.bigRadius = (smallestDimension / 2) - this.marbleRadius;
+      this.numberRadius = (smallestDimension / 2) - (this.marbleRadius * 2) - (this.textSize);
+      this.smallRadius = (smallestDimension / 2) - (this.marbleRadius * 4) - 20;
+      this.center = paper.view.center;
+      this.shiftedCenter = paper.view.center;
+      this.shiftedCenter.y += (this.textSize / 2.5);
+      this.shiftedCenter.x -= (this.textSize / 15);
+
+      let outerPoints = [];
+      let numberPoints = [];
+      let innerPoints = [];
+
+      this.populatePoints(this.center, this.numSpaces, this.bigRadius, outerPoints);
+      this.populatePoints(this.shiftedCenter, this.numSpaces, this.numberRadius, numberPoints);
+      this.populatePoints(this.center, this.numSpaces, this.smallRadius, innerPoints);
+
+      for (let item of this.outerCircles) {
+        item.remove();
+      }
+
+      for (let item of this.numbers) {
+        item.remove();
+      }
+
+      for (let item of this.innerCircles) {
+        item.remove();
+      }
+
+      this.outerCircles = [];
+      this.numbers = [];
+      this.innerCircles = [];
+
+      this.populateCircles(this.marbleRadius, outerPoints, this.outerCircles);
+      this.populateNumbers(this.textSize, numberPoints, this.numbers);
+      this.populateCircles(this.marbleRadius, innerPoints, this.innerCircles);
+    }
   }
 
   updateBoard(board) {
