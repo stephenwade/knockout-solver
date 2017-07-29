@@ -66,25 +66,17 @@ class Gui {
       this.populatePoints(this.shiftedCenter, this.numSpaces, this.numberRadius, numberPoints);
       this.populatePoints(this.center, this.numSpaces, this.smallRadius, innerPoints);
 
-      for (let item of this.outerCircles) {
-        item.remove();
+      for (let i = 0; i < outerPoints.length; i++) {
+        this.outerCircles[i].position = outerPoints[i];
       }
 
-      for (let item of this.numbers) {
-        item.remove();
+      for (let i = 0; i < numberPoints.length; i++) {
+        this.numbers[i].position = numberPoints[i];
       }
 
-      for (let item of this.innerCircles) {
-        item.remove();
+      for (let i = 0; i < innerPoints.length; i++) {
+        this.innerCircles[i].position = innerPoints[i];
       }
-
-      this.outerCircles = [];
-      this.numbers = [];
-      this.innerCircles = [];
-
-      this.populateCircles(this.marbleRadius, outerPoints, this.outerCircles);
-      this.populateNumbers(this.textSize, numberPoints, this.numbers);
-      this.populateCircles(this.marbleRadius, innerPoints, this.innerCircles);
     }
   }
 
