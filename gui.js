@@ -55,8 +55,8 @@ class Gui {
       this.smallRadius = (smallestDimension / 2) - (this.marbleRadius * 4) - 20;
       this.center = paper.view.center;
       this.shiftedCenter = paper.view.center;
-      this.shiftedCenter.y += (this.textSize / 2.5);
-      this.shiftedCenter.x -= (this.textSize / 15);
+      //this.shiftedCenter.y += (this.textSize / 4);
+      //this.shiftedCenter.x -= (this.textSize / 15);
 
       let outerPoints = [];
       let numberPoints = [];
