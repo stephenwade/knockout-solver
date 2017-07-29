@@ -7,9 +7,12 @@ class KnockoutAI {
       const success = takeTurnFn(id, turn);
       if (!success) {
         takeTurnFn(id, []);
-        console.error(`${id} tried to make an invalid move, skipping turn
+        console.error(
+          `${id} tried to make an invalid move, skipping turn
 attempted move: ${turn.toString()}
-next turn detail:`, e.detail);
+next turn detail:`,
+          e.detail
+        );
       }
     });
   }
