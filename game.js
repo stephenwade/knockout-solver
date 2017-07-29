@@ -158,7 +158,7 @@ class Game {
 
   _checkEndGame() {
     if (this.consecutiveTurnsSkipped / this.players.length >= 2)
-      this._endGame();
+      return this._endGame();
 
     const lockedSpaces = this.board.filter(space => space.state == "both");
     if (
@@ -167,13 +167,17 @@ class Game {
           lockedSpaces.filter(space => space.player == player).length >= 5
       )
     )
-      this._endGame();
+      return this._endGame();
+
+    return false;
   }
 
   _endGame() {
     this.gameState = "ended";
 
-    this._broadcastState;
+    this._broadcastState();
+
+    return true;
   }
 
   _getPlayerById(id) {
