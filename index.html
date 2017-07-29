@@ -5,14 +5,20 @@
   <meta name="viewport" content="width=device-width">
   <title>Knockout Solver</title>
   <style>
-  	body
-  	{
-      margin:0;
-  	}
+    html,
+    body {
+      height: 100%;
+    }
+
+    /* Scale canvas with resize attribute to full size */
+    canvas[resize] {
+      width: 100%;
+      height: 100%;
+    }
   </style>
 </head>
 <body>
-  <canvas id="knockout-canvas"></canvas>
+  <canvas id="knockout-canvas" resize></canvas>
   <script src="game.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.11.4/paper-full.js"></script>
   <script src="gui.js"></script>
