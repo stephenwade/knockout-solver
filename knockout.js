@@ -6,11 +6,17 @@ window.knockout = {};
 
 knockout.game = new Game(18);
 knockout.gui = new Gui(18);
-knockout.players = [];
-knockout.players.push(knockout.game.addPlayer("Stephen", "blue"));
-knockout.players.push(knockout.game.addPlayer("Joshua", "red"));
+knockout.ais = [];
+let takeTurnFn = knockout.game.takeTurn.bind(knockout.game);
+knockout.ais.push(new KnockoutAI(knockout.game.addPlayer("AI 1", "blue"), takeTurnFn));
+knockout.ais.push(new KnockoutAI(knockout.game.addPlayer("AI 2", "red"), takeTurnFn));
 
 window.addEventListener("knockout-nextturn", e =>
   console.log("next turn", e.detail)
 );
+
+window.addEventListener("knockout-gamestate", e =>
+  console.log("game state", e.detail)
+);
+
 knockout.game.startGame();

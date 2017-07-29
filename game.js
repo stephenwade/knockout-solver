@@ -110,7 +110,9 @@ class Game {
     this._nextTurn();
   }
 
-  takeTurn(id, moves = []) {
+  takeTurn(id, moves) {
+    console.log(id, "is playing", moves);
+
     if (this.gameState != "playing") return false;
 
     if (this._getPlayerById(id) !== this.currentPlayer) return false;
@@ -195,6 +197,8 @@ class Game {
     }
     this.lastDiceTotal = diceTotal;
 
+    this._broadcastState();
+
     const turn = {
       board: this.board.map(item => Object.assign({}, item)),
       player: this.currentPlayer.id,
@@ -207,7 +211,5 @@ class Game {
         detail: turn
       })
     );
-
-    this._broadcastState();
   }
 }
