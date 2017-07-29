@@ -155,7 +155,8 @@ class Game {
   }
 
   _checkEndGame() {
-    if (this.consecutiveTurnsSkipped / this.players.length > 2) this._endGame();
+    if (this.consecutiveTurnsSkipped / this.players.length >= 2)
+      this._endGame();
 
     const lockedSpaces = this.board.filter(space => space.state == "both");
     if (
