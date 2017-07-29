@@ -147,6 +147,8 @@ class Game {
       gameState: this.gameState
     };
 
+    console.log("game state", state);
+
     window.dispatchEvent(
       new CustomEvent("knockout-gamestate", {
         detail: state
