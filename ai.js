@@ -19,7 +19,13 @@ next turn detail:`,
     });
   }
 
-  _takeTurn(detail) {
+  // turn: {
+  //   board: Array<{ state: string, player?: string }>,
+  //   player: string,
+  //   dice: Array<number>,
+  //   diceTotal: number
+  // }
+  _takeTurn(turn) {
     return [];
   }
 }
