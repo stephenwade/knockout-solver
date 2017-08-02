@@ -4,16 +4,18 @@ class KnockoutAI {
       if (e.detail.player != id) return;
 
       const turn = this._takeTurn(e.detail);
-      const success = takeTurnFn(id, turn);
-      if (!success) {
-        takeTurnFn(id, []);
-        console.error(
-          `${id} tried to make an invalid move, skipping turn
-attempted move: ${turn.toString()}
+      window.setTimeout(() => {
+        const success = takeTurnFn(id, turn);
+        if (!success) {
+          takeTurnFn(id, []);
+          console.error(
+            `${id} tried to make an invalid move, skipping turn
+attempted move: [${turn.toString()}]
 next turn detail:`,
-          e.detail
-        );
-      }
+            e.detail
+          );
+        }
+      }, 500);
     });
   }
 
