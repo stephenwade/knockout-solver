@@ -35,6 +35,12 @@ class BoardSpace {
     this.player = undefined;
   }
 
+  copy() {
+    const copy = Object.assign({}, this);
+    copy.canMove = this.canMove;
+    return copy;
+  }
+
   canMove() {
     return this.state == "empty" || this.state == "one";
   }
@@ -65,6 +71,10 @@ class Player {
     this.id = uuid4();
     this.name = name;
     this.color = color;
+  }
+
+  copy() {
+    return Object.assign({}, this);
   }
 }
 
@@ -141,8 +151,8 @@ class Game {
 
   _broadcastState() {
     const state = {
-      board: this.board.map(item => Object.assign({}, item)),
-      players: this.players.map(player => Object.assign({}, player)),
+      board: this.board.map(space => space.copy()),
+      players: this.players.map(player => player.copy()),
       currentPlayer: this.currentPlayer ? this.currentPlayer.id : undefined,
       gameState: this.gameState
     };
@@ -207,7 +217,7 @@ class Game {
     this._broadcastState();
 
     const turn = {
-      board: this.board.map(item => Object.assign({}, item)),
+      board: this.board.map(space => space.copy()),
       player: this.currentPlayer.id,
       dice: dice,
       diceTotal: diceTotal
