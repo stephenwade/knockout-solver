@@ -12,7 +12,7 @@ knockout.ais.push(
   new StephenAI(knockout.game.addPlayer("Stephen’s AI", "blue"), takeTurnFn)
 );
 knockout.ais.push(
-  new KnockoutAI(knockout.game.addPlayer("Dummy AI", "red"), takeTurnFn)
+  new StephenAI(knockout.game.addPlayer("Stephen’s AI 2", "red"), takeTurnFn)
 );
 
 knockout.game.startGame();
