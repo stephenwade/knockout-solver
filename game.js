@@ -35,7 +35,7 @@ class BoardSpace {
     this.player = undefined;
   }
 
-  canMove(player) {
+  canMove() {
     return this.state == "empty" || this.state == "one";
   }
 
@@ -54,7 +54,7 @@ class BoardSpace {
       }
     }
 
-    if (this.canMove(player)) throw new Error("move and canMove disagree");
+    if (this.canMove()) throw new Error("move and canMove disagree");
 
     return false;
   }
@@ -131,7 +131,7 @@ class Game {
     if (moves.reduce((sum, move) => sum + move, 0) != this.lastDiceTotal)
       return false;
 
-    if (moves.every(move => this.board[move - 1].canMove(this.currentPlayer))) {
+    if (moves.every(move => this.board[move - 1].canMove())) {
       moves.forEach(move => this.board[move - 1].move(this.currentPlayer));
       this._nextTurn();
       return true;
